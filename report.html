@@ -2,61 +2,65 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- 
-    Project: Trash Talkers Website
-    Page: Report Issue
-  -->
-  <title>Report an Issue | Trash Talkers</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- 
+    Project: Trash Talkers
+    Page: Report Issue
+    Note: Map ke liye Leaflet.js use kiya hai
+  -->
+  
+  <title>Report Issue | Trash Talkers</title>
 
-  <!-- Font Awesome Icons -->
+  <!-- FontAwesome for Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Poppins Font -->
+  
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Map CSS (Leaflet) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
   <style>
-    /* CSS Variables */
+    /* Global Variables - Theme Colors */
     :root {
-      --primary: #10b981;    /* Green */
-      --secondary: #f43f5e;  /* Red/Pink */
-      --accent: #fbbf24;     /* Yellow */
-      --blue: #3b82f6;       /* Blue */
+      --primary: #10b981;    
+      --secondary: #f43f5e;
+      --accent: #fbbf24;     
+      --blue: #3b82f6; 
+      --purple: #8b5cf6;      
 
-      --bg: #f8fafc;
-      --card: #ffffff;
-      --text: #1e293b;
-      --text-muted: #64748b;
-      --navbar-bg: rgba(255, 255, 255, 0.95);
-      --border: rgba(0,0,0,0.08);
+      --bg-color: #f8fafc;
+      --card-white: #ffffff;
+      --text-dark: #1e293b;
+      --text-light: #64748b;
       
-      /* Logo Colors */
-      --logo-dark: #4b2e15;
-      --logo-light: #c9a97a;
+      --nav-bg: rgba(255, 255, 255, 0.95);
+      --border-color: rgba(0,0,0,0.08);
+      
+      --logo-brown: #4b2e15;
+      --logo-gold: #c9a97a;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
-    html { scroll-behavior: smooth; }
-    
     body {
       font-family: 'Poppins', sans-serif;
-      background: #f5f0e8;   /* Light warm background */
-      color: var(--text);
-      min-height: 100vh;
+      background: #f5f0e8;
+      color: var(--text-dark);
+      overflow-x: hidden;
     }
     
     a { text-decoration: none; color: inherit; }
 
-    /* NAVBAR (Same as Home) */
+    /* --- Navigation Bar --- */
     .navbar {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       height: 72px;
-      background: var(--navbar-bg);
+      background: var(--nav-bg);
       backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--border-color);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -64,77 +68,34 @@
       z-index: 1000;
     }
 
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    /* Logo Styling */
+    .nav-logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+    .logo-top { font-size: 0.55rem; letter-spacing: 0.5em; text-transform: uppercase; color: var(--logo-gold); }
+    .logo-bottom { font-size: 1.4rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--logo-brown); }
 
-    .nav-logo-text {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.1;
-    }
-
-    .logo-top {
-      font-size: 0.55rem;
-      letter-spacing: 0.5em;
-      text-transform: uppercase;
-      color: var(--logo-light);
-    }
-
-    .logo-bottom {
-      font-size: 1.4rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--logo-dark);
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
+    /* Nav Links */
+    .nav-links { display: flex; gap: 8px; }
+    
     .nav-link {
-      padding: 10px 20px;
+      padding: 10px 18px;
       border-radius: 50px;
       font-size: 0.9rem;
       font-weight: 500;
-      color: var(--text-muted);
+      color: var(--text-light);
       transition: all 0.3s ease;
     }
 
-    .nav-link:hover { color: var(--text); background: rgba(0,0,0,0.05); }
+    .nav-link:hover { color: var(--text-dark); background: rgba(0,0,0,0.05); }
     .nav-link.active { color: var(--primary); background: rgba(16, 185, 129, 0.1); }
-    .nav-link i { margin-right: 8px; }
+    .nav-link i { margin-right: 6px; }
 
-    /* colors per page */
-    .nav-link.report:hover,
-    .nav-link.report.active {
-      color: var(--secondary);
-      background: rgba(244, 63, 94, 0.1);
-    }
+    /* Hover Colors for Nav */
+    .nav-link.report:hover, .active.report { color: var(--secondary); background: rgba(244, 63, 94, 0.1); }
+    .nav-link.team:hover { color: var(--blue); background: rgba(59, 130, 246, 0.1); }
+    .nav-link.leaderboard:hover { color: var(--purple); background: rgba(139, 92, 246, 0.1); }
+    .nav-link.donate:hover { color: var(--accent); background: rgba(251, 191, 36, 0.1); }
 
-    .nav-link.team:hover,
-    .nav-link.team.active {
-      color: var(--blue);
-      background: rgba(59, 130, 246, 0.1);
-    }
-
-    .nav-link.donate:hover,
-    .nav-link.donate.active {
-      color: var(--accent);
-      background: rgba(251, 191, 36, 0.1);
-    }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
+    /* CTA Button */
     .nav-cta {
       padding: 10px 24px;
       background: linear-gradient(135deg, var(--primary), #059669);
@@ -142,259 +103,114 @@
       border-radius: 50px;
       font-weight: 600;
       font-size: 0.9rem;
-      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
-      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+      transition: transform 0.2s;
     }
+    .nav-cta:hover { transform: translateY(-2px); }
 
-    .nav-cta:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.45);
-    }
-
-    .menu-btn {
-      display: none;
-      width: 42px;
-      height: 42px;
-      border: none;
-      background: transparent;
-      color: var(--text);
-      font-size: 1.3rem;
-      cursor: pointer;
-    }
-
-    /*REPORT FORM SECTION */
-    .main {
-      padding-top: 72px;
-      min-height: 100vh;
+    /* --- Main Content --- */
+    .main-container {
+      padding-top: 100px; /* Navbar ke neeche space */
+      padding-bottom: 50px;
       display: flex;
-      align-items: center;
       justify-content: center;
-      padding: 100px 20px;
+      align-items: center;
+      min-height: 100vh;
+      padding-left: 20px;
+      padding-right: 20px;
     }
 
-    /* Form Container */
-    .form-card {
-      background: var(--card);
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      padding: 40px 48px;
+    .report-card {
+      background: var(--card-white);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      padding: 40px;
       width: 100%;
-      max-width: 560px;
+      max-width: 700px;
     }
 
-    .form-title {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 8px;
-    }
+    .card-title { font-size: 1.8rem; font-weight: 700; color: var(--primary); margin-bottom: 5px; }
+    .card-desc { font-size: 0.95rem; color: var(--text-light); margin-bottom: 30px; }
 
-    .form-subtitle {
-      font-size: 0.95rem;
-      color: var(--text-muted);
-      margin-bottom: 32px;
-      line-height: 1.5;
-    }
-
-    .form-section { margin-bottom: 28px; }
-
-    .form-label {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 12px;
-      display: block;
-    }
-
-    /* File Upload Area */
-    .upload-zone {
-      border: 2px dashed var(--border);
+    /* Map Box */
+    .map-container { margin-bottom: 25px; }
+    #map-box {
+      height: 320px;
+      width: 100%;
       border-radius: 12px;
-      padding: 40px 20px;
+      border: 2px solid #e2e8f0;
+      z-index: 1;
+    }
+    .hint-text { font-size: 0.8rem; color: var(--text-light); margin-top: 5px; }
+
+    /* File Upload Box */
+    .upload-box {
+      border: 2px dashed #cbd5e1;
+      border-radius: 12px;
+      padding: 30px;
       text-align: center;
       cursor: pointer;
-      transition: all 0.3s ease;
-      background: #fdf7e5; /* Light yellow background */
+      background: #fffbeb; /* light yellow bg */
+      transition: 0.3s;
+      margin-bottom: 25px;
     }
+    .upload-box:hover { border-color: var(--primary); background: #f0fdf4; }
+    
+    .upload-icon { font-size: 2rem; color: #94a3b8; margin-bottom: 10px; }
+    .preview-img img { max-width: 100%; max-height: 150px; border-radius: 8px; margin-top: 15px; }
 
-    .upload-zone:hover,
-    .upload-zone.dragover {
-      border-color: var(--primary);
-      background: rgba(16, 185, 129, 0.04);
-    }
-
-    .upload-icon {
-      font-size: 2.5rem;
-      color: var(--text-muted);
-      margin-bottom: 12px;
-    }
-
-    .upload-text {
-      font-size: 0.95rem;
-      color: var(--text-muted);
-    }
-
-    .upload-text span {
-      color: var(--primary);
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .upload-hint {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-top: 8px;
-      opacity: 0.7;
-    }
-
-    .upload-zone input { display: none; } /* Hide the default file input (I check later this) */
-
-    .upload-preview { margin-top: 16px; }
-
-    .upload-preview img {
-      max-width: 100%;
-      max-height: 200px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-
-    /* Select Dropdown */
-    .form-select {
+    /* Form Fields */
+    .form-group { margin-bottom: 20px; }
+    .label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--text-dark); }
+    
+    .input-field {
       width: 100%;
-      padding: 14px 16px;
-      border: 1px solid var(--border);
+      padding: 12px 15px;
+      border: 1px solid #cbd5e1;
       border-radius: 8px;
       font-family: inherit;
-      font-size: 0.95rem;
-      color: var(--text-muted);
-      background: var(--card);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      appearance: none;
-      /*arrow icon */
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 16px center;
-    }
-
-    .form-select:focus {
       outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
     }
-
-    /* Textarea */
-    .form-textarea {
-      width: 100%;
-      padding: 14px 16px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 0.95rem;
-      color: var(--text);
-      background: var(--card);
-      resize: vertical;
-      min-height: 100px;
-      transition: all 0.3s ease;
-    }
-
-    .form-textarea::placeholder { color: var(--text-muted); }
-
-    .form-textarea:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
-    }
-
-    .form-hint {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-top: 8px;
-    }
+    .input-field:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
 
     /* Submit Button */
-    .submit-btn {
+    .btn-submit {
       width: 100%;
-      padding: 16px 24px;
-      background: linear-gradient(135deg, #ea580c, #dc2626); /* Orange/Red Gradient */
+      padding: 15px;
+      background: var(--primary);
       color: white;
       border: none;
-      border-radius: 8px;
-      font-family: inherit;
+      border-radius: 10px;
       font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s ease;
-      margin-top: 8px;
+      transition: 0.3s;
     }
-
-    .submit-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(234, 88, 12, 0.35);
-    }
+    .btn-submit:hover { background: #059669; transform: translateY(-2px); }
 
     /* Success Message (Hidden by default) */
-    .success-message {
+    .success-popup {
       display: none;
       text-align: center;
-      padding: 20px;
-      background: rgba(16, 185, 129, 0.1);
-      border-radius: 12px;
       margin-top: 20px;
+      padding: 20px;
+      background: #ecfdf5;
+      border-radius: 10px;
+      color: #065f46;
     }
 
-    .success-message i {
-      font-size: 3rem;
-      color: var(--primary);
-      margin-bottom: 12px;
-    }
-
-    .success-message h3 {
-      color: var(--primary);
-      margin-bottom: 8px;
-    }
-
-    .success-message p {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-
-    /*MEDIA QUERIES */
+    /* Mobile Responsive */
     @media (max-width: 768px) {
       .navbar { padding: 0 20px; }
-
-      .nav-links {
-        display: none;
-        position: absolute;
-        top: 72px;
-        left: 0;
-        right: 0;
-        background: var(--navbar-bg);
-        backdrop-filter: blur(20px);
-        flex-direction: column;
-        padding: 20px;
-        border-bottom: 1px solid var(--border);
-      }
-
-      .nav-links.active { display: flex; }
-
-      .nav-cta { display: none; }
-
-      .menu-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .main { padding: 100px 16px 40px; }
-      .form-card { padding: 28px 24px; }
-      .form-title { font-size: 1.5rem; }
+      .nav-links { display: none; } /* Mobile menu implementation pending */
+      .main-container { padding-top: 80px; }
+      .report-card { padding: 25px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- NAVIGATION BAR -->
+  <!-- NAVBAR -->
   <nav class="navbar">
     <a href="index.html" class="nav-logo">
       <div class="nav-logo-text">
@@ -403,145 +219,180 @@
       </div>
     </a>
 
-    <!-- Menu Links -->
-    <div class="nav-links" id="navLinks">
-      <a href="index.html" class="nav-link">
-        <i class="fa-solid fa-house"></i>Home
-      </a>
-      <a href="report.html" class="nav-link report active">
-        <i class="fa-solid fa-camera"></i>Report
-      </a>
-      <a href="volunteer.html" class="nav-link team">
-        <i class="fa-solid fa-users"></i>Team
-      </a>
-      <a href="donate.html" class="nav-link donate">
-        <i class="fa-solid fa-heart"></i>Donate
-      </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="report.html" class="nav-link report active"><i class="fa-solid fa-camera"></i> Report</a>
+      <a href="volunteer.html" class="nav-link team"><i class="fa-solid fa-users"></i> Team</a>
+      <a href="leaderboard.html" class="nav-link leaderboard"><i class="fa-solid fa-trophy"></i> Leaderboard</a>
+      <a href="donate.html" class="nav-link donate"><i class="fa-solid fa-heart"></i> Donate</a>
     </div>
 
-    <!-- Right Side -->
     <div class="nav-right">
-      <a href="report.html" class="nav-cta">
-        <i class="fa-solid fa-plus"></i> Report Issue
-      </a>
-      <button class="menu-btn" onclick="toggleMenu()">
-        <i class="fa-solid fa-bars"></i>
-      </button>
+      <a href="report.html" class="nav-cta">Report Issue</a>
     </div>
   </nav>
 
-  <!-- MAIN CONTENT -->
-  <main class="main">
-    <div class="form-card">
-      <h1 class="form-title">Report an Issue</h1>
-      <p class="form-subtitle">
-        Help improve your community by reporting issues. Your submission will notify local volunteers.
-      </p>
+  <!-- MAIN SECTION -->
+  <div class="main-container">
+    <div class="report-card">
+      <h1 class="card-title">Report an Issue</h1>
+      <p class="card-desc">See garbage or a pothole? Pin it on the map so our team can fix it!</p>
 
-      <!-- REPORT FORM -->
-      <form id="reportForm">
+      <form id="issueForm">
         
-        <!-- 1. Photo Upload Section -->
-        <div class="form-section">
-          <label class="form-label">1. Photo of the Issue</label>
-          <div class="upload-zone" id="uploadZone">
-            <div class="upload-icon">
-              <i class="fa-solid fa-cloud-arrow-up"></i>
-            </div>
-            <p class="upload-text"><span>Click to upload</span> or drag and drop</p>
-            <p class="upload-hint">PNG, JPG, GIF up to 10MB</p>
-            <input type="file" id="fileInput" accept="image/*">
-            <!-- Image Preview Container -->
-            <div class="upload-preview" id="uploadPreview"></div>
+        <!-- STEP 1: MAP -->
+        <div class="form-group map-container">
+          <label class="label">1. Pin Location <span style="color:red">*</span></label>
+          <div id="map-box"></div>
+          <p class="hint-text">ℹ️ Click anywhere on the map to drop a pin.</p>
+          
+          <!-- Hidden fields to store lat/lng for backend -->
+          <input type="hidden" id="lat" name="latitude">
+          <input type="hidden" id="lng" name="longitude">
+        </div>
+
+        <!-- STEP 2: PHOTO -->
+        <div class="form-group">
+          <label class="label">2. Upload Photo</label>
+          <div class="upload-box" id="dropZone">
+            <div class="upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+            <p>Click to upload proof (Image)</p>
+            <input type="file" id="filePicker" accept="image/*" style="display:none">
+            <div class="preview-img" id="imgPreview"></div>
           </div>
         </div>
 
-        <!-- 2. Category Selection -->
-        <div class="form-section">
-          <label class="form-label">2. Select a Category</label>
-          <select class="form-select" id="category" required>
-            <option value="" disabled selected>Select a category for the issue</option>
-            <option value="garbage">🗑️ Garbage / Litter</option>
-            <option value="graffiti">🎨 Graffiti</option>
-            <option value="pothole">🕳️ Pothole</option>
-            <option value="streetlight">💡 Broken Streetlight</option>
-            <option value="drainage">🚿 Drainage Issue</option>
-            <option value="illegal-dumping">🚛 Illegal Dumping</option>
-            <option value="other">📌 Other</option>
+        <!-- STEP 3: DETAILS -->
+        <div class="form-group">
+          <label class="label">3. Select Category</label>
+          <select class="input-field" required>
+            <option value="" disabled selected>What is the issue?</option>
+            <option value="garbage">Garbage / Litter</option>
+            <option value="pothole">Road Damage / Pothole</option>
+            <option value="graffiti">Vandalism / Graffiti</option>
+            <option value="other">Other</option>
           </select>
         </div>
 
-        <!-- 3. Description Field -->
-        <div class="form-section">
-          <label class="form-label">3. Optional Description</label>
-          <textarea class="form-textarea" id="description"
-            placeholder="Add a short description (e.g., 'Broken glass near the playground')."></textarea>
-          <p class="form-hint">A brief description helps volunteers understand the issue better.</p>
+        <div class="form-group">
+          <label class="label">4. Description (Optional)</label>
+          <textarea class="input-field" rows="3" placeholder="Any extra details..."></textarea>
         </div>
 
-        <button type="submit" class="submit-btn">Submit Issue</button>
+        <button type="submit" class="btn-submit">Submit Report</button>
       </form>
 
-      <!-- Success Message (Visible after submit) -->
-      <div class="success-message" id="successMessage">
-        <i class="fa-solid fa-circle-check"></i>
-        <h3>Thank You!</h3>
-        <p>Your report has been submitted. Our volunteers will look into it soon.</p>
+      <!-- Success Message -->
+      <div class="success-popup" id="msgBox">
+        <h3><i class="fa-solid fa-check-circle"></i> Reported!</h3>
+        <p>Thanks for helping keep Indore clean. We've notified volunteers nearby.</p>
       </div>
+
     </div>
-  </main>
+  </div>
+
+  <!-- Leaflet Map Library -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <script>
-    // Toggle Mobile Menu
-    function toggleMenu() {
-      document.getElementById('navLinks').classList.toggle('active');
-    }
+    // --- MAP SETUP ---
+    // Centered on Indore (My City)
+    const indoreCoords = [22.7196, 75.8577];
+    const map = L.map('map-box').setView(indoreCoords, 14);
 
-    // Handle File Upload Logic
-    const uploadZone = document.getElementById('uploadZone');
-    const fileInput = document.getElementById('fileInput');
-    const uploadPreview = document.getElementById('uploadPreview');
+    // Load visual tiles from OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
 
-    // Click to upload
-    uploadZone.addEventListener('click', () => fileInput.click());
+    // --- ADDING FAKE VOLUNTEERS (Just for demo) ---
+    const nearbyVolunteers = [
+      [22.722, 75.860], // Near Rajwada
+      [22.715, 75.855], // Near Station
+      [22.725, 75.850]
+    ];
 
-    // Drag and Drop effects
-    uploadZone.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      uploadZone.classList.add('dragover');
+    // Green icon for volunteers
+    const greenIcon = new L.Icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
     });
 
-    uploadZone.addEventListener('dragleave', () => {
-      uploadZone.classList.remove('dragover');
+    // Loop to add markers
+    nearbyVolunteers.forEach(pos => {
+      L.marker(pos, {icon: greenIcon}).addTo(map)
+       .bindPopup("Volunteer nearby!");
     });
 
-    uploadZone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      uploadZone.classList.remove('dragover');
-      if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+    // --- USER PIN LOGIC ---
+    let myPin = null;
+
+    map.on('click', function(e) {
+      const lat = e.latlng.lat;
+      const lng = e.latlng.lng;
+
+      // Remove old pin if exists
+      if (myPin) {
+        map.removeLayer(myPin);
+      }
+
+      // Add new red pin
+      myPin = L.marker([lat, lng]).addTo(map)
+        .bindPopup("Selected Location")
+        .openPopup();
+
+      // Update hidden inputs
+      document.getElementById('lat').value = lat;
+      document.getElementById('lng').value = lng;
+      
+      console.log("Pinned at:", lat, lng); // For debugging
     });
 
-    // Handle file selection
-    fileInput.addEventListener('change', (e) => {
-      if (e.target.files[0]) handleFile(e.target.files[0]);
+    // --- PHOTO UPLOAD LOGIC ---
+    const dropZone = document.getElementById('dropZone');
+    const filePicker = document.getElementById('filePicker');
+    const imgPreview = document.getElementById('imgPreview');
+
+    // Click box to open file manager
+    dropZone.addEventListener('click', () => filePicker.click());
+
+    // Show preview when file selected
+    filePicker.addEventListener('change', (e) => {
+      if(e.target.files && e.target.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          imgPreview.innerHTML = `<img src="${event.target.result}" alt="Preview">`;
+        }
+        reader.readAsDataURL(e.target.files[0]);
+      }
     });
 
-    // Show image preview
-    function handleFile(file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        uploadPreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
-      };
-      reader.readAsDataURL(file);
-    }
+    // --- FORM SUBMIT ---
+    const form = document.getElementById('issueForm');
+    const msgBox = document.getElementById('msgBox');
 
-    // Submit Handler
-    document.getElementById('reportForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      // Hide form, show success
-      document.getElementById('reportForm').style.display = 'none';
-      document.getElementById('successMessage').style.display = 'block';
+    form.addEventListener('submit', (e) => {
+      e.preventDefault(); // Stop page reload
+
+      // Simple validation for map
+      if(!document.getElementById('lat').value) {
+        alert("Please select a location on the map first!");
+        return;
+      }
+
+      // Hide form and show success message
+      form.style.display = 'none';
+      msgBox.style.display = 'block';
+      
+      // Scroll to message
+      msgBox.scrollIntoView({behavior: "smooth"});
     });
+
   </script>
+
 </body>
 </html>

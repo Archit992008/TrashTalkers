@@ -3,29 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <!-- 
-    Project: Trash Talkers
+    Project: Trash Talkers Website
     Page: Home (Index)
-    Created by: [ 
-Vishruthi Thiyagarajan/Archit Choudhary]
+    Created by: [Vishruthi Thiyagarajan/ Archit Choudhary]
   -->
   <title>Trash Talkers | Home</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <!-- Using Font for icons -->
+  <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Google Fonts: Poppins for modern look -->
+  <!-- Google Fonts: Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     /* 
        Color Palette 
-Centralize your theme with CSS variables: change a color once, and it updates everywhere
+       Using CSS variables for consistent theme
     */
     :root {
       --primary: #10b981;    /* Green */
-      --secondary: #f43f5e;  /* Red/Pink for Report */
-      --accent: #fbbf24;     /* Yellow for Donate */
-      --blue: #3b82f6;       /* Blue for Team */
+      --secondary: #f43f5e;  /* Red/Pink */
+      --accent: #fbbf24;     /* Yellow */
+      --blue: #3b82f6;       /* Blue */
+      --purple: #8b5cf6;     /* Purple */
       
       --bg: #f8fafc;
       --card: #ffffff;
@@ -54,7 +54,7 @@ Centralize your theme with CSS variables: change a color once, and it updates ev
     
     a { text-decoration: none; color: inherit; }
 
-    /* NAVBAR STYLES*/
+    /* Navbar Styles */
     .navbar {
       position: fixed;
       top: 0;
@@ -62,7 +62,7 @@ Centralize your theme with CSS variables: change a color once, and it updates ev
       right: 0;
       height: 72px;
       background: var(--navbar-bg);
-      backdrop-filter: blur(20px); /* Glassmorphism effect */
+      backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
@@ -98,7 +98,7 @@ Centralize your theme with CSS variables: change a color once, and it updates ev
       color: var(--logo-dark);
     }
 
-    /* Navigation Menu */
+    /* Navigation Links */
     .nav-links {
       display: flex;
       align-items: center;
@@ -106,7 +106,7 @@ Centralize your theme with CSS variables: change a color once, and it updates ev
     }
 
     .nav-link {
-      padding: 10px 20px;
+      padding: 10px 18px;
       border-radius: 50px;
       font-size: 0.9rem;
       font-weight: 500;
@@ -118,7 +118,7 @@ Centralize your theme with CSS variables: change a color once, and it updates ev
     .nav-link.active { color: var(--primary); background: rgba(16, 185, 129, 0.1); }
     .nav-link i { margin-right: 8px; }
 
-    /* Specific hover effects for different pages */
+    /* Custom hover colors */
     .nav-link.report:hover, .nav-link.report.active {
       color: var(--secondary);
       background: rgba(244, 63, 94, 0.1);
@@ -127,6 +127,11 @@ Centralize your theme with CSS variables: change a color once, and it updates ev
     .nav-link.team:hover, .nav-link.team.active {
       color: var(--blue);
       background: rgba(59, 130, 246, 0.1);
+    }
+    
+    .nav-link.leaderboard:hover, .nav-link.leaderboard.active {
+      color: var(--purple);
+      background: rgba(139, 92, 246, 0.1);
     }
 
     .nav-link.donate:hover, .nav-link.donate.active {
@@ -140,7 +145,7 @@ Centralize your theme with CSS variables: change a color once, and it updates ev
       gap: 12px;
     }
 
-    /* nav bar */
+    /* CTA Button */
     .nav-cta {
       padding: 10px 24px;
       background: linear-gradient(135deg, var(--primary), #059669);
@@ -157,7 +162,7 @@ Centralize your theme with CSS variables: change a color once, and it updates ev
       box-shadow: 0 10px 30px rgba(16, 185, 129, 0.45);
     }
 
-    /* Mobile Menu Button */
+    /* Mobile Menu  */
     .menu-btn {
       display: none;
       width: 42px;
@@ -169,13 +174,13 @@ Centralize your theme with CSS variables: change a color once, and it updates ev
       cursor: pointer;
     }
 
-    /*  MAIN CONTENT SECTIONS */
+    /* Main Content */
     .main {
-      padding-top: 72px; /* Push content down below fixed navbar */
+      padding-top: 72px;
       min-height: 100vh;
     }
 
-    /* Banner */
+    /* Hero Banner */
     .green-hero {
       background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
       padding: 80px 60px;
@@ -198,7 +203,7 @@ Centralize your theme with CSS variables: change a color once, and it updates ev
       line-height: 1.7;
     }
 
-    /* Features Grid */
+    /* Features Section */
     .features {
       padding: 80px 60px;
       max-width: 1400px;
@@ -233,7 +238,7 @@ Centralize your theme with CSS variables: change a color once, and it updates ev
       gap: 24px;
     }
 
-    /* Card */
+    /* Feature Cards */
     .feature-card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -242,10 +247,10 @@ Centralize your theme with CSS variables: change a color once, and it updates ev
       transition: all 0.4s ease;
       position: relative;
       overflow: hidden;
-      display: block; /* Make sure anchor works as a block */
+      display: block;
     }
 
-    /* animation line at top */
+    /*  line effect */
     .feature-card::before {
       content: '';
       position: absolute;
@@ -279,7 +284,7 @@ Centralize your theme with CSS variables: change a color once, and it updates ev
       margin-bottom: 20px;
     }
 
-    /* Different colors for different feature icons */
+    /* Card Icon Colors */
     .feature-card:nth-child(1) .feature-icon {
       background: rgba(244, 63, 94, 0.1);
       color: var(--secondary);
@@ -327,11 +332,11 @@ Centralize your theme with CSS variables: change a color once, and it updates ev
       transform: translateX(5px);
     }
 
-    /*MEDIA QUERIES */
+    /* Responsive adjustments */
     @media (max-width: 1024px) {
       .green-hero { padding: 60px 30px; }
       .green-hero h1 { font-size: 2.2rem; }
-      .feature-grid { grid-template-columns: 1fr; } /* Stack cards on tablet */
+      .feature-grid { grid-template-columns: 1fr; } 
     }
 
     @media (max-width: 768px) {
@@ -368,7 +373,7 @@ Centralize your theme with CSS variables: change a color once, and it updates ev
 </head>
 <body>
 
-  <!-- NAVIGATION BAR -->
+  <!-- Navigation Bar -->
   <nav class="navbar">
     <a href="index.html" class="nav-logo">
       <div class="nav-logo-text">
@@ -377,7 +382,7 @@ Centralize your theme with CSS variables: change a color once, and it updates ev
       </div>
     </a>
 
-    <!-- Desktop Menu -->
+    <!-- Menu Items -->
     <div class="nav-links" id="navLinks">
       <a href="index.html" class="nav-link active">
         <i class="fa-solid fa-house"></i>Home
@@ -388,12 +393,15 @@ Centralize your theme with CSS variables: change a color once, and it updates ev
       <a href="volunteer.html" class="nav-link team">
         <i class="fa-solid fa-users"></i>Team
       </a>
+      <a href="leaderboard.html" class="nav-link leaderboard">
+        <i class="fa-solid fa-trophy"></i>Leaderboard
+      </a>
       <a href="donate.html" class="nav-link donate">
         <i class="fa-solid fa-heart"></i>Donate
       </a>
     </div>
 
-    <!-- Right Side + mobile look better and all -->
+    <!-- Right Side (Button + Mobile Menu) -->
     <div class="nav-right">
       <a href="report.html" class="nav-cta">
         <i class="fa-solid fa-plus"></i> Report Issue
@@ -404,10 +412,10 @@ Centralize your theme with CSS variables: change a color once, and it updates ev
     </div>
   </nav>
 
-  <!-- MAIN CONTENT -->
+  <!-- Main Content -->
   <main class="main">
     
-    <!-- Banner -->
+    <!-- Hero Banner -->
     <section class="green-hero">
       <h1>Let's talk trash!</h1>
       <p>Join the Trash Talker community to report issues, volunteer for clean-ups, and/or donate to support our mission!</p>
@@ -420,8 +428,9 @@ Centralize your theme with CSS variables: change a color once, and it updates ev
         <p>Three simple ways to make a difference</p>
       </div>
 
-      <!-- Feature Cards Grid -->
+      <!-- Features Grid -->
       <div class="feature-grid">
+        <!-- 1. Report -->
         <a href="report.html" class="feature-card">
           <div class="feature-icon"><i class="fa-solid fa-camera"></i></div>
           <h3>Report an Issue</h3>
@@ -429,6 +438,7 @@ Centralize your theme with CSS variables: change a color once, and it updates ev
           <div class="feature-arrow"><i class="fa-solid fa-arrow-right"></i></div>
         </a>
 
+        <!-- 2. Volunteer -->
         <a href="volunteer.html" class="feature-card">
           <div class="feature-icon"><i class="fa-solid fa-users"></i></div>
           <h3>Volunteer</h3>
@@ -436,6 +446,7 @@ Centralize your theme with CSS variables: change a color once, and it updates ev
           <div class="feature-arrow"><i class="fa-solid fa-arrow-right"></i></div>
         </a>
 
+        <!-- 3. Donate -->
         <a href="donate.html" class="feature-card">
           <div class="feature-icon"><i class="fa-solid fa-heart"></i></div>
           <h3>Donate</h3>
@@ -447,10 +458,9 @@ Centralize your theme with CSS variables: change a color once, and it updates ev
 
   </main>
 
-  <!-- Simple JS  -->
   <script>
+    // mobile menu visibility
     function toggleMenu() {
-      // the 'active' class on the nav-links div :)
       const navLinks = document.getElementById('navLinks');
       navLinks.classList.toggle('active');
     }
@@ -458,3 +468,4 @@ Centralize your theme with CSS variables: change a color once, and it updates ev
 
 </body>
 </html>
+

@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Donate | Trash Talkers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Icons + Font -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #10b981;
+      --secondary: #f43f5e;
+      --accent: #fbbf24;
+      --blue: #3b82f6;
+
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --navbar-bg: rgba(255, 255, 255, 0.95);
+      --border: rgba(0,0,0,0.08);
+      
+      --logo-dark: #4b2e15;
+      --logo-light: #c9a97a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    html { scroll-behavior: smooth; }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f5f0e8;
+      color: var(--text);
+      min-height: 100vh;
+    }
+    
+    a { text-decoration: none; color: inherit; }
+
+    /* Navbar Styles */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 72px;
+      background: var(--navbar-bg);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      z-index: 1000;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .logo-top {
+      font-size: 0.55rem;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--logo-light);
+    }
+
+    .logo-bottom {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--logo-dark);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-link {
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all 0.3s ease;
+    }
+
+    .nav-link:hover { color: var(--text); background: rgba(0,0,0,0.05); }
+    .nav-link.active { color: var(--primary); background: rgba(16, 185, 129, 0.1); }
+    .nav-link i { margin-right: 8px; }
+
+    /* Custom hover colors */
+    .nav-link.report:hover, .nav-link.report.active {
+      color: var(--secondary);
+      background: rgba(244, 63, 94, 0.1);
+    }
+
+    .nav-link.team:hover, .nav-link.team.active {
+      color: var(--blue);
+      background: rgba(59, 130, 246, 0.1);
+    }
+
+    .nav-link.donate:hover, .nav-link.donate.active {
+      color: var(--accent);
+      background: rgba(251, 191, 36, 0.12);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-cta {
+      padding: 10px 24px;
+      background: linear-gradient(135deg, var(--primary), #059669);
+      color: white;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+      transition: all 0.3s ease;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.45);
+    }
+
+    .menu-btn {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+
+    /* Main Content */
+    .main {
+      padding-top: 72px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 20px;
+    }
+
+    /* Donation Card */
+    .donate-card {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      padding: 40px 48px;
+      width: 100%;
+      max-width: 620px;
+    }
+
+    .donate-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(251, 191, 36, 0.16);
+      color: #92400e;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .donate-badge i {
+      color: #eab308;
+    }
+
+    .donate-title {
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .donate-subtitle {
+      font-size: 0.97rem;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    /* Amount Chips */
+    .amount-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .amount-chip {
+      flex: 1;
+      min-width: 90px;
+      padding: 10px 0;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #fff7e6;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #b45309;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .amount-chip:hover,
+    .amount-chip.active {
+      border-color: #fbbf24;
+      background: #facc15;
+      color: #78350f;
+      box-shadow: 0 6px 18px rgba(250, 204, 21, 0.4);
+      transform: translateY(-1px);
+    }
+
+    /* Form Styles */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .form-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .input,
+    .select {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: var(--text);
+      background: var(--card);
+      transition: all 0.25s ease;
+    }
+
+    .input::placeholder { color: var(--text-muted); }
+
+    .input:focus,
+    .select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
+    }
+
+    .note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Submit Button */
+    .donate-btn {
+      width: 100%;
+      margin-top: 16px;
+      padding: 14px 24px;
+      border-radius: 10px;
+      border: none;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: white;
+      box-shadow: 0 10px 25px rgba(34, 197, 94, 0.45);
+      transition: all 0.25s ease;
+    }
+
+    .donate-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(34, 197, 94, 0.55);
+    }
+
+    .secure-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .secure-row i {
+      color: #22c55e;
+    }
+
+    /* Thank You Message */
+    .thankyou {
+      display: none;
+      text-align: center;
+      padding: 26px 18px;
+      margin-top: 18px;
+      border-radius: 14px;
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    .thankyou i {
+      font-size: 2.8rem;
+      color: #10b981;
+      margin-bottom: 8px;
+    }
+
+    .thankyou h3 {
+      color: #059669;
+      margin-bottom: 4px;
+    }
+
+    .thankyou p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .navbar { padding: 0 20px; }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 72px;
+        left: 0;
+        right: 0;
+        background: var(--navbar-bg);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        padding: 20px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .nav-links.active { display: flex; }
+
+      .nav-cta { display: none; }
+
+      .menu-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .main { padding: 100px 16px 40px; }
+      .donate-card { padding: 28px 22px; }
+      .donate-title { font-size: 1.6rem; }
+      .form-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-text">
+        <span class="logo-top">TRASH</span>
+        <span class="logo-bottom">TALKERS</span>
+      </div>
+    </a>
+
+    <div class="nav-links" id="navLinks">
+      <a href="index.html" class="nav-link">
+        <i class="fa-solid fa-house"></i>Home
+      </a>
+      <a href="report.html" class="nav-link report">
+        <i class="fa-solid fa-camera"></i>Report
+      </a>
+      <a href="volunteer.html" class="nav-link team">
+        <i class="fa-solid fa-users"></i>Team
+      </a>
+      <a href="donate.html" class="nav-link donate active">
+        <i class="fa-solid fa-heart"></i>Donate
+      </a>
+    </div>
+
+    <div class="nav-right">
+      <a href="report.html" class="nav-cta">
+        <i class="fa-solid fa-plus"></i> Report Issue
+      </a>
+      <button class="menu-btn" onclick="toggleMenu()">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="donate-card">
+      <div class="donate-badge">
+        <i class="fa-solid fa-hand-holding-heart"></i>
+        You’re helping keep our city clean
+      </div>
+
+      <h1 class="donate-title">Help us keep our streets clean</h1>
+      <p class="donate-subtitle">
+        Your support helps us buy gloves, garbage bags, tools, and water/snacks for volunteers so we can run more cleanup drives in our neighbourhoods.
+      </p>
+
+      <!-- Quick Amounts -->
+      <div class="form-section">
+        <label class="form-label">Pick an amount to donate</label>
+        <div class="amount-row">
+          <button type="button" class="amount-chip" data-amount="250">₹250</button>
+          <button type="button" class="amount-chip" data-amount="500">₹500</button>
+          <button type="button" class="amount-chip" data-amount="1000">₹1000</button>
+          <button type="button" class="amount-chip" data-amount="2000">₹2000</button>
+        </div>
+      </div>
+
+      <form id="donateForm">
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="form-label">Your full name</label>
+            <input class="input" type="text" id="name" placeholder="Enter your full name" required>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Email address</label>
+            <input class="input" type="email" id="email" placeholder="We'll send your receipt here" required>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="form-label">How much would you like to give? (₹)</label>
+            <input class="input" type="number" id="amount" placeholder="Enter amount" min="1" required>
+            <p class="note">Tap one of the amounts above or type any amount you’re comfortable giving.</p>
+          </div>
+          <div class="form-field">
+            <label class="form-label">How often would you like to give?</label>
+            <select class="select" id="frequency">
+              <option value="one-time">One-time</option>
+              <option value="monthly">Monthly</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Message for the Trash Talkers team (optional)</label>
+          <input class="input" type="text" id="message" placeholder="Share a short message or suggestion">
+        </div>
+
+        <button type="submit" class="donate-btn">
+          <i class="fa-solid fa-heart"></i> Donate now
+        </button>
+
+        <div class="secure-row">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>Your payment details are kept safe. Right now this is a demo form, so you won’t actually be charged.</span>
+        </div>
+      </form>
+
+      <div class="thankyou" id="thankyouBox">
+        <i class="fa-solid fa-circle-check"></i>
+        <h3>Thank you for your support!</h3>
+        <p>Your contribution helps us clean more spots, involve more volunteers, and keep our community greener.</p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('navLinks').classList.toggle('active');
+    }
+
+    // Quick amount buttons
+    const chips = document.querySelectorAll('.amount-chip');
+    const amountInput = document.getElementById('amount');
+
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        chips.forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        amountInput.value = chip.dataset.amount;
+      });
+    });
+
+    // Fake submit for demo
+    document.getElementById('donateForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      document.getElementById('donateForm').style.display = 'none';
+      document.getElementById('thankyouBox').style.display = 'block';
+      // Scroll to top
+      document.querySelector('.donate-card').scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

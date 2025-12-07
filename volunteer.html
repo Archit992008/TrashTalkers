@@ -14,7 +14,7 @@
       --primary: #10b981;
       --secondary: #f43f5e;
       --accent: #fbbf24;
-      --blue: #3b82f6;
+      --blue: #3b82f6; /* Bright blue from your image */
       
       --bg: #f8fafc;
       --card: #ffffff;
@@ -99,7 +99,7 @@
     .nav-link:hover { color: var(--text); background: rgba(0,0,0,0.05); }
     .nav-link i { margin-right: 8px; }
 
-    /* Active link */
+    /* Active link style */
     .nav-link.team,
     .nav-link.team.active {
       color: var(--blue);
@@ -149,31 +149,34 @@
       padding-bottom: 60px;
     }
 
-    /* Section */
-    .team- {
+    /* Hero Section - Matched to Image */
+    .team-hero {
       text-align: center;
-      padding: 40px 20px;
-      border-radius: 20px;
-      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+      padding: 60px 20px;
+      border-radius: 16px;
+      /* The exact light blue background from the image */
+      background-color: #e0f2fe; 
       margin-bottom: 30px;
     }
 
     .team-hero h1 {
-      font-size: 2.4rem;
-      font-weight: 800;
-      color: var(--blue);
-      margin-bottom: 10px;
+      font-size: 2.2rem;
+      font-weight: 700;
+      /* Bright blue title color */
+      color: #3b82f6; 
+      margin-bottom: 12px;
     }
 
     .team-hero p {
-      color: var(--text-muted);
-      max-width: 650px;
+      /* Muted blue-grey subtitle */
+      color: #475569; 
+      max-width: 700px;
       margin: 0 auto;
       font-size: 1rem;
-      line-height: 1.7;
+      line-height: 1.6;
     }
 
-    /* Form Container */
+    /* Form Embed Container */
     .form-wrapper {
       background: var(--card);
       border-radius: 16px;
@@ -213,7 +216,7 @@
         justify-content: center;
       }
 
-      .team-hero h1 { font-size: 1.9rem; }
+      .team-hero h1 { font-size: 1.8rem; }
       .form-wrapper iframe { height: 1000px; }
     }
   </style>
@@ -257,11 +260,11 @@
   <!-- Main Content -->
   <main>
     <section class="team-hero">
-      <h1>Become a Trash Talker</h1>
-      <p>Sign up to volunteer for community clean-up initiatives and choose the tasks, timings, and roles that work best for you.</p>
+      <h1>Become a Volunteer</h1>
+      <p>Join our clean-up efforts and choose shifts or roles that fit your schedule.</p>
     </section>
 
-    <!-- Google Form  -->
+    <!-- Google Form Embed -->
     <section class="form-wrapper">
       <iframe 
         src="https://docs.google.com/forms/d/e/1FAIpQLSc5sveesxPF3-lIgyM1toF-YCZ3PXwRdgpeZ1r-8VstukBTvA/viewform?embedded=true" 

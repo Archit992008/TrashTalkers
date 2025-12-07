@@ -21,6 +21,7 @@
       --secondary: #f43f5e;
       --accent: #fbbf24;
       --blue: #3b82f6;
+      --purple: #8b5cf6;
 
       --bg: #f8fafc;
       --card: #ffffff;
@@ -97,7 +98,7 @@
     }
 
     .nav-link {
-      padding: 10px 20px;
+      padding: 10px 18px;
       border-radius: 50px;
       font-size: 0.9rem;
       font-weight: 500;
@@ -118,6 +119,11 @@
     .nav-link.team:hover, .nav-link.team.active {
       color: var(--blue);
       background: rgba(59, 130, 246, 0.1);
+    }
+
+    .nav-link.leaderboard:hover, .nav-link.leaderboard.active {
+      color: var(--purple);
+      background: rgba(139, 92, 246, 0.1);
     }
 
     .nav-link.donate:hover, .nav-link.donate.active {
@@ -421,6 +427,10 @@
       </a>
       <a href="volunteer.html" class="nav-link team">
         <i class="fa-solid fa-users"></i>Team
+      </a>
+      <!-- NEW LEADERBOARD LINK -->
+      <a href="leaderboard.html" class="nav-link leaderboard">
+        <i class="fa-solid fa-trophy"></i>Leaderboard
       </a>
       <a href="donate.html" class="nav-link donate active">
         <i class="fa-solid fa-heart"></i>Donate

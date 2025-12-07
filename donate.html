@@ -2,14 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <!-- 
+    Project: Trash Talkers
+    Page: Donate
+  -->
   <title>Donate | Trash Talkers</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Icons + Font -->
+  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
+    /* colors */
     :root {
       --primary: #10b981;
       --secondary: #f43f5e;
@@ -40,7 +46,7 @@
     
     a { text-decoration: none; color: inherit; }
 
-    /* Navbar Styles */
+    /* Navbar */
     .navbar {
       position: fixed;
       top: 0;
@@ -103,7 +109,7 @@
     .nav-link.active { color: var(--primary); background: rgba(16, 185, 129, 0.1); }
     .nav-link i { margin-right: 8px; }
 
-    /* Custom hover colors */
+    /* colors 2 */
     .nav-link.report:hover, .nav-link.report.active {
       color: var(--secondary);
       background: rgba(244, 63, 94, 0.1);
@@ -152,7 +158,7 @@
       cursor: pointer;
     }
 
-    /* Main Content */
+    /* Main Section */
     .main {
       padding-top: 72px;
       min-height: 100vh;
@@ -162,7 +168,7 @@
       padding: 100px 20px;
     }
 
-    /* Donation Card */
+    /* Donation Form Card */
     .donate-card {
       background: var(--card);
       border-radius: 16px;
@@ -185,9 +191,7 @@
       margin-bottom: 12px;
     }
 
-    .donate-badge i {
-      color: #eab308;
-    }
+    .donate-badge i { color: #eab308; }
 
     .donate-title {
       font-size: 1.9rem;
@@ -203,7 +207,30 @@
       line-height: 1.6;
     }
 
-    /* Amount Chips */
+    /* Currency & Amount Section */
+    .amount-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .currency-select {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text);
+      cursor: pointer;
+      outline: none;
+    }
+    
+    .currency-select:focus {
+      border-color: var(--primary);
+    }
+
     .amount-row {
       display: flex;
       gap: 10px;
@@ -235,7 +262,7 @@
       transform: translateY(-1px);
     }
 
-    /* Form Styles */
+    /* Inputs */
     .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -271,8 +298,7 @@
 
     .input::placeholder { color: var(--text-muted); }
 
-    .input:focus,
-    .select:focus {
+    .input:focus, .select:focus {
       outline: none;
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
@@ -315,11 +341,9 @@
       color: var(--text-muted);
     }
 
-    .secure-row i {
-      color: #22c55e;
-    }
+    .secure-row i { color: #22c55e; }
 
-    /* Thank You Message */
+    /* Success Message */
     .thankyou {
       display: none;
       text-align: center;
@@ -348,30 +372,28 @@
     /* Mobile Responsive */
     @media (max-width: 768px) {
       .navbar { padding: 0 20px; }
-
+      
       .nav-links {
         display: none;
         position: absolute;
         top: 72px;
-        left: 0;
-        right: 0;
+        left: 0; right: 0;
         background: var(--navbar-bg);
         backdrop-filter: blur(20px);
         flex-direction: column;
         padding: 20px;
         border-bottom: 1px solid var(--border);
       }
-
+      
       .nav-links.active { display: flex; }
-
       .nav-cta { display: none; }
-
+      
       .menu-btn {
         display: flex;
         align-items: center;
         justify-content: center;
       }
-
+      
       .main { padding: 100px 16px 40px; }
       .donate-card { padding: 28px 22px; }
       .donate-title { font-size: 1.6rem; }
@@ -415,7 +437,7 @@
     </div>
   </nav>
 
-  <!-- MAIN -->
+  <!-- MAIN SECTION -->
   <main class="main">
     <div class="donate-card">
       <div class="donate-badge">
@@ -428,17 +450,30 @@
         Your support helps us buy gloves, garbage bags, tools, and water/snacks for volunteers so we can run more cleanup drives in our neighbourhoods.
       </p>
 
-      <!-- Quick Amounts -->
+      <!-- Amount Selection with Currency -->
       <div class="form-section">
-        <label class="form-label">Pick an amount to donate</label>
-        <div class="amount-row">
-          <button type="button" class="amount-chip" data-amount="250">₹250</button>
+        <div class="amount-header">
+          <label class="form-label" style="margin:0;">Pick an amount</label>
+          
+          <!-- Currency Selector -->
+          <select class="currency-select" id="currencySelect">
+            <option value="IN">INR (₹)</option>
+            <option value="US">USD ($)</option>
+            <option value="EU">EUR (€)</option>
+            <option value="GB">GBP (£)</option>
+          </select>
+        </div>
+        
+        <!-- Chips container -->
+        <div class="amount-row" id="chipsContainer">
+          <button type="button" class="amount-chip active" data-amount="250">₹250</button>
           <button type="button" class="amount-chip" data-amount="500">₹500</button>
           <button type="button" class="amount-chip" data-amount="1000">₹1000</button>
           <button type="button" class="amount-chip" data-amount="2000">₹2000</button>
         </div>
       </div>
 
+      <!-- User Details Form -->
       <form id="donateForm">
         <div class="form-grid">
           <div class="form-field">
@@ -453,7 +488,7 @@
 
         <div class="form-grid">
           <div class="form-field">
-            <label class="form-label">How much would you like to give? (₹)</label>
+            <label class="form-label" id="amountLabel">How much would you like to give? (₹)</label>
             <input class="input" type="number" id="amount" placeholder="Enter amount" min="1" required>
             <p class="note">Tap one of the amounts above or type any amount you’re comfortable giving.</p>
           </div>
@@ -477,10 +512,11 @@
 
         <div class="secure-row">
           <i class="fa-solid fa-shield-halved"></i>
-          <span>Your payment details are kept safe. Right now this is a demo form, so you won’t actually be charged.</span>
+          <span>Payments are processed securely. This is a demo form, so you won’t actually be charged.</span>
         </div>
       </form>
 
+      <!-- Thank You Message -->
       <div class="thankyou" id="thankyouBox">
         <i class="fa-solid fa-circle-check"></i>
         <h3>Thank you for your support!</h3>
@@ -494,10 +530,84 @@
       document.getElementById('navLinks').classList.toggle('active');
     }
 
-    // Quick amount buttons
-    const chips = document.querySelectorAll('.amount-chip');
+    // --- Currency Configuration ---
+    const currencyConfig = {
+      'IN': { symbol: '₹', amounts: [250, 500, 1000, 2000] },
+      'US': { symbol: '$', amounts: [5, 10, 25, 50] },
+      'GB': { symbol: '£', amounts: [3, 5, 15, 30] },
+      'EU': { symbol: '€', amounts: [4, 8, 20, 40] }
+    };
+
+    const currencySelect = document.getElementById('currencySelect');
+    const chipsContainer = document.getElementById('chipsContainer');
+    const amountLabel = document.getElementById('amountLabel');
     const amountInput = document.getElementById('amount');
 
+    // Function to update the UI when currency changes
+    function updateCurrencyUI(code) {
+      const config = currencyConfig[code] || currencyConfig['IN'];
+      const symbol = config.symbol;
+
+      // Update Label text
+      amountLabel.textContent = `How much would you like to give? (${symbol})`;
+      
+      // Update Chips logic
+      chipsContainer.innerHTML = ''; // Clear old buttons
+      
+      config.amounts.forEach(amt => {
+        // Create new button
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'amount-chip';
+        btn.dataset.amount = amt;
+        btn.textContent = `${symbol}${amt}`;
+        
+        // Add click event to new button
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.amount-chip').forEach(c => c.classList.remove('active'));
+          btn.classList.add('active');
+          amountInput.value = btn.dataset.amount;
+        });
+
+        chipsContainer.appendChild(btn);
+      });
+
+      // Clear the input box
+      amountInput.value = '';
+    }
+
+    // Event Listener for Manual Selection
+    currencySelect.addEventListener('change', (e) => {
+      updateCurrencyUI(e.target.value);
+    });
+
+    // Auto-detect Location using free API
+    fetch('https://ipapi.co/json/')
+      .then(response => response.json())
+      .then(data => {
+        let code = data.country_code
+        if (!currencyConfig[code]) {
+           // Simple check for EU countries
+           const euCodes = ['DE','FR','IT','ES','NL','BE','AT'];
+           if (euCodes.includes(code)) code = 'EU';
+           else if (code === 'GB') code = 'GB';
+           else if (code === 'US') code = 'US';
+           else code = 'US'; // Default fallback
+        }
+        
+        // Update the dropdown and chips
+        if(currencyConfig[code]) {
+            currencySelect.value = code;
+            updateCurrencyUI(code);
+        }
+      })
+      .catch(() => {
+        // API failed or blocked, just stick to default (INR)
+        console.log("Could not detect location, using default.");
+      });
+
+    // Default Chip Logic (Runs immediately for INR)
+    const chips = document.querySelectorAll('.amount-chip');
     chips.forEach(chip => {
       chip.addEventListener('click', () => {
         chips.forEach(c => c.classList.remove('active'));
@@ -506,14 +616,14 @@
       });
     });
 
-    // Fake submit for demo
+    // Demo Submit Handler
     document.getElementById('donateForm').addEventListener('submit', (e) => {
       e.preventDefault();
       document.getElementById('donateForm').style.display = 'none';
       document.getElementById('thankyouBox').style.display = 'block';
-      // Scroll to top
       document.querySelector('.donate-card').scrollIntoView({ behavior: 'smooth' });
     });
   </script>
 </body>
 </html>
+

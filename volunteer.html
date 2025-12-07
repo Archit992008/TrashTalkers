@@ -3,206 +3,279 @@
 <head>
   <meta charset="UTF-8">
   <title>Trash Talkers | Team</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Icons + Fonts -->
+  <!-- Icons + Font -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-    /* Basic theme colors */
     :root {
       --primary: #10b981;
+      --secondary: #f43f5e;
+      --accent: #fbbf24;
       --blue: #3b82f6;
-      --bg: #f5f7fa;
-      --card: #fff;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --border: #e5e7eb;
+      
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --navbar-bg: rgba(255, 255, 255, 0.95);
+      --border: rgba(0,0,0,0.08);
+      
+      --logo-dark: #4b2e15;
+      --logo-light: #c9a97a;
     }
 
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
     body {
-      margin: 0;
       font-family: 'Poppins', sans-serif;
       background: var(--bg);
       color: var(--text);
     }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+    
+    a { text-decoration: none; color: inherit; }
 
     /* Navbar */
     .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 40px;
-      height: 70px;
       position: fixed;
       top: 0;
-      width: 100%;
-      background: rgba(255,255,255,0.95);
-      backdrop-filter: blur(10px);
+      left: 0;
+      right: 0;
+      height: 72px;
+      background: var(--navbar-bg);
+      backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
-      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      z-index: 1000;
     }
 
-    .logo-text {
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo-text {
       display: flex;
       flex-direction: column;
-      font-weight: 700;
+      line-height: 1.1;
     }
 
-    .logo-text span:first-child {
+    .logo-top {
       font-size: 0.55rem;
-      letter-spacing: 0.4em;
-      color: #bfa27a;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--logo-light);
     }
 
-    .logo-text span:last-child {
-      font-size: 1.3rem;
-      color: #4b2e15;
-      letter-spacing: 0.05em;
+    .logo-bottom {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--logo-dark);
     }
 
     .nav-links {
       display: flex;
-      gap: 10px;
       align-items: center;
+      gap: 8px;
     }
 
     .nav-link {
-      padding: 8px 18px;
-      border-radius: 30px;
+      padding: 10px 20px;
+      border-radius: 50px;
       font-size: 0.9rem;
-      color: var(--muted);
-      transition: 0.2s ease;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all 0.3s ease;
     }
 
-    .nav-link:hover {
-      background: rgba(0,0,0,0.05);
-      color: var(--text);
-    }
+    .nav-link:hover { color: var(--text); background: rgba(0,0,0,0.05); }
+    .nav-link i { margin-right: 8px; }
 
-    .nav-link.active {
-      background: rgba(59,130,246,0.12);
+    /* Active link */
+    .nav-link.team,
+    .nav-link.team.active {
       color: var(--blue);
+      background: rgba(59, 130, 246, 0.1);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-cta {
+      padding: 10px 24px;
+      background: linear-gradient(135deg, var(--primary), #059669);
+      color: white;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+      transition: all 0.3s ease;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.45);
     }
 
     .menu-btn {
       display: none;
-      font-size: 1.4rem;
-      background: none;
+      width: 42px;
+      height: 42px;
       border: none;
+      background: transparent;
+      color: var(--text);
+      font-size: 1.3rem;
       cursor: pointer;
     }
 
-    /* Main Wrapper */
+    /* Page Content */
     main {
-      padding: 100px 20px 50px;
+      padding-top: 90px;
       max-width: 1100px;
-      margin: auto;
+      margin: 0 auto;
+      padding-left: 20px;
+      padding-right: 20px;
+      padding-bottom: 60px;
     }
 
-    .team-hero {
+    /* Section */
+    .team- {
       text-align: center;
-      background: #dce9ff;
-      padding: 35px;
-      border-radius: 16px;
+      padding: 40px 20px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
       margin-bottom: 30px;
     }
 
     .team-hero h1 {
-      font-size: 2.3rem;
-      margin-bottom: 8px;
+      font-size: 2.4rem;
+      font-weight: 800;
       color: var(--blue);
+      margin-bottom: 10px;
     }
 
     .team-hero p {
-      max-width: 600px;
-      margin: auto;
-      color: var(--muted);
-      line-height: 1.6;
+      color: var(--text-muted);
+      max-width: 650px;
+      margin: 0 auto;
+      font-size: 1rem;
+      line-height: 1.7;
     }
 
-    .form-container {
+    /* Form Container */
+    .form-wrapper {
       background: var(--card);
-      padding: 18px;
-      border-radius: 14px;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      padding: 20px;
     }
 
-    iframe {
+    .form-wrapper iframe {
       width: 100%;
       height: 900px;
-      border: none;
+      border: 0;
     }
 
+    /* Mobile Responsive */
     @media (max-width: 768px) {
+      .navbar { padding: 0 20px; }
+
       .nav-links {
         display: none;
-        flex-direction: column;
         position: absolute;
+        top: 72px;
         left: 0;
         right: 0;
-        top: 70px;
-        background: rgba(255,255,255,0.97);
-        padding: 15px;
+        background: var(--navbar-bg);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        padding: 20px;
         border-bottom: 1px solid var(--border);
       }
 
-      .nav-links.open {
-        display: flex;
-      }
+      .nav-links.active { display: flex; }
+      .nav-cta { display: none; }
 
       .menu-btn {
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
-      iframe {
-        height: 1050px;
-      }
+      .team-hero h1 { font-size: 1.9rem; }
+      .form-wrapper iframe { height: 1000px; }
     }
   </style>
 </head>
 <body>
 
+  <!-- Navbar -->
   <nav class="navbar">
-    <a href="index.html" class="logo">
-      <div class="logo-text">
-        <span>TRASH</span>
-        <span>TALKERS</span>
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-text">
+        <span class="logo-top">TRASH</span>
+        <span class="logo-bottom">TALKERS</span>
       </div>
     </a>
 
     <div class="nav-links" id="navLinks">
-      <a href="index.html" class="nav-link">Home</a>
-      <a href="report.html" class="nav-link">Report</a>
-      <a href="volunteer.html" class="nav-link active">Team</a>
-      <a href="donate.html" class="nav-link">Donate</a>
+      <a href="index.html" class="nav-link">
+        <i class="fa-solid fa-house"></i>Home
+      </a>
+      <a href="report.html" class="nav-link report">
+        <i class="fa-solid fa-camera"></i>Report
+      </a>
+      <a href="volunteer.html" class="nav-link team active">
+        <i class="fa-solid fa-users"></i>Team
+      </a>
+      <a href="donate.html" class="nav-link donate">
+        <i class="fa-solid fa-heart"></i>Donate
+      </a>
     </div>
 
-    <button class="menu-btn" onclick="toggleMenu()">
-      <i class="fa-solid fa-bars"></i>
-    </button>
+    <div class="nav-right">
+      <a href="report.html" class="nav-cta">
+        <i class="fa-solid fa-plus"></i> Report Issue
+      </a>
+      <button class="menu-btn" onclick="toggleMenu()">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
   </nav>
 
+  <!-- Main Content -->
   <main>
     <section class="team-hero">
-      <h1>Become a Volunteer</h1>
-      <p>Join our clean-up efforts and choose shifts or roles that fit your schedule.</p>
+      <h1>Become a Trash Talker</h1>
+      <p>Sign up to volunteer for community clean-up initiatives and choose the tasks, timings, and roles that work best for you.</p>
     </section>
 
-    <section class="form-container">
-      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSc5sveesxPF3-lIgyM1toF-YCZ3PXwRdgpeZ1r-8VstukBTvA/viewform?embedded=true">Loading…</iframe>
+    <!-- Google Form  -->
+    <section class="form-wrapper">
+      <iframe 
+        src="https://docs.google.com/forms/d/e/1FAIpQLSc5sveesxPF3-lIgyM1toF-YCZ3PXwRdgpeZ1r-8VstukBTvA/viewform?embedded=true" 
+        frameborder="0" 
+        marginheight="0" 
+        marginwidth="0">
+        Loading…
+      </iframe>
     </section>
   </main>
 
   <script>
     function toggleMenu() {
-      document.getElementById('navLinks').classList.toggle('open');
+      document.getElementById('navLinks').classList.toggle('active');
     }
   </script>
 

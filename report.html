@@ -5,43 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <!-- 
-    Project: Trash Talkers
-    Page: Report Issue
-    Note: Map ke liye Leaflet.js use kiya hai
+    Trash Talkers - Report Issue Page
+    Developed by: Archit & Team
+    Description: Allows users to report issues via map & geolocation.
   -->
   
   <title>Report Issue | Trash Talkers</title>
 
-  <!-- FontAwesome for Icons -->
+  <!-- External Libraries -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- Map CSS (Leaflet) -->
+  <!-- Leaflet Map CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
 
   <style>
-    /* Global Variables - Theme Colors */
+    /* Theme Variables */
     :root {
-      --primary: #10b981;    
-      --secondary: #f43f5e;
-      --accent: #fbbf24;     
-      --blue: #3b82f6; 
-      --purple: #8b5cf6;      
+      --primary-green: #10b981;    
+      --alert-red: #f43f5e;
+      --accent-yellow: #fbbf24;     
+      --link-blue: #3b82f6; 
+      --leaderboard-purple: #8b5cf6;      
 
-      --bg-color: #f8fafc;
+      --bg-light: #f8fafc;
       --card-white: #ffffff;
       --text-dark: #1e293b;
-      --text-light: #64748b;
+      --text-gray: #64748b;
       
-      --nav-bg: rgba(255, 255, 255, 0.95);
-      --border-color: rgba(0,0,0,0.08);
-      
-      --logo-brown: #4b2e15;
-      --logo-gold: #c9a97a;
+      --nav-backdrop: rgba(255, 255, 255, 0.95);
+      --border-light: rgba(0,0,0,0.08);
     }
 
+    /* Reset & Base Styles */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
     body {
@@ -53,343 +50,311 @@
     
     a { text-decoration: none; color: inherit; }
 
-    /* --- Navigation Bar --- */
+    /* Navigation Bar */
     .navbar {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 72px;
-      background: var(--nav-bg);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 48px;
-      z-index: 1000;
+      position: fixed; top: 0; left: 0; right: 0; height: 72px;
+      background: var(--nav-backdrop); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-light);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px; z-index: 999;
     }
 
-    /* Logo Styling */
-    .nav-logo-text { display: flex; flex-direction: column; line-height: 1.1; }
-    .logo-top { font-size: 0.55rem; letter-spacing: 0.5em; text-transform: uppercase; color: var(--logo-gold); }
-    .logo-bottom { font-size: 1.4rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--logo-brown); }
+    .brand-container { display: flex; flex-direction: column; line-height: 1.1; }
+    .brand-top { font-size: 0.55rem; letter-spacing: 0.5em; text-transform: uppercase; color: #c9a97a; }
+    .brand-bottom { font-size: 1.4rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #4b2e15; }
 
-    /* Nav Links */
-    .nav-links { display: flex; gap: 8px; }
+    .nav-items { display: flex; gap: 8px; }
     
-    .nav-link {
-      padding: 10px 18px;
-      border-radius: 50px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--text-light);
-      transition: all 0.3s ease;
+    .nav-item {
+      padding: 10px 18px; border-radius: 50px; font-size: 0.9rem; font-weight: 500; color: var(--text-gray); transition: 0.2s ease-in-out;
     }
+    .nav-item:hover { color: var(--text-dark); background: rgba(0,0,0,0.04); }
+    .nav-item.active { color: var(--primary-green); background: rgba(16, 185, 129, 0.1); }
+    .nav-item i { margin-right: 6px; }
 
-    .nav-link:hover { color: var(--text-dark); background: rgba(0,0,0,0.05); }
-    .nav-link.active { color: var(--primary); background: rgba(16, 185, 129, 0.1); }
-    .nav-link i { margin-right: 6px; }
+    /* Hover States for Menu */
+    .nav-item.report:hover, .active.report { color: var(--alert-red); background: rgba(244, 63, 94, 0.1); }
+    .nav-item.team:hover { color: var(--link-blue); background: rgba(59, 130, 246, 0.1); }
+    .nav-item.leaderboard:hover { color: var(--leaderboard-purple); background: rgba(139, 92, 246, 0.1); }
+    .nav-item.donate:hover { color: var(--accent-yellow); background: rgba(251, 191, 36, 0.1); }
 
-    /* Hover Colors for Nav */
-    .nav-link.report:hover, .active.report { color: var(--secondary); background: rgba(244, 63, 94, 0.1); }
-    .nav-link.team:hover { color: var(--blue); background: rgba(59, 130, 246, 0.1); }
-    .nav-link.leaderboard:hover { color: var(--purple); background: rgba(139, 92, 246, 0.1); }
-    .nav-link.donate:hover { color: var(--accent); background: rgba(251, 191, 36, 0.1); }
-
-    /* CTA Button */
-    .nav-cta {
-      padding: 10px 24px;
-      background: linear-gradient(135deg, var(--primary), #059669);
-      color: white;
-      border-radius: 50px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
-      transition: transform 0.2s;
+    .cta-btn {
+      padding: 10px 24px; background: linear-gradient(135deg, var(--primary-green), #059669); color: white; border-radius: 50px; font-weight: 600; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25); transition: transform 0.2s;
     }
-    .nav-cta:hover { transform: translateY(-2px); }
+    .cta-btn:hover { transform: translateY(-2px); }
 
-    /* --- Main Content --- */
-    .main-container {
-      padding-top: 100px; /* Navbar ke neeche space */
-      padding-bottom: 50px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding-left: 20px;
-      padding-right: 20px;
+    /* Main Container */
+    .wrapper {
+      padding-top: 100px; padding-bottom: 50px;
+      display: flex; justify-content: center; align-items: center; min-height: 100vh;
+      padding-left: 20px; padding-right: 20px;
     }
 
     .report-card {
-      background: var(--card-white);
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-      padding: 40px;
-      width: 100%;
-      max-width: 700px;
+      background: var(--card-white); border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+      padding: 40px; width: 100%; max-width: 680px;
     }
 
-    .card-title { font-size: 1.8rem; font-weight: 700; color: var(--primary); margin-bottom: 5px; }
-    .card-desc { font-size: 0.95rem; color: var(--text-light); margin-bottom: 30px; }
+    .page-header { font-size: 1.8rem; font-weight: 700; color: var(--primary-green); margin-bottom: 5px; }
+    .page-sub { font-size: 0.95rem; color: var(--text-gray); margin-bottom: 25px; }
 
-    /* Map Box */
-    .map-container { margin-bottom: 25px; }
-    #map-box {
-      height: 320px;
-      width: 100%;
-      border-radius: 12px;
-      border: 2px solid #e2e8f0;
-      z-index: 1;
-    }
-    .hint-text { font-size: 0.8rem; color: var(--text-light); margin-top: 5px; }
-
-    /* File Upload Box */
-    .upload-box {
-      border: 2px dashed #cbd5e1;
-      border-radius: 12px;
-      padding: 30px;
-      text-align: center;
-      cursor: pointer;
-      background: #fffbeb; /* light yellow bg */
-      transition: 0.3s;
-      margin-bottom: 25px;
-    }
-    .upload-box:hover { border-color: var(--primary); background: #f0fdf4; }
+    /* Map Section */
+    .map-wrapper { margin-bottom: 25px; }
     
-    .upload-icon { font-size: 2rem; color: #94a3b8; margin-bottom: 10px; }
-    .preview-img img { max-width: 100%; max-height: 150px; border-radius: 8px; margin-top: 15px; }
+    #issue-map {
+      height: 350px; width: 100%; border-radius: 10px; border: 2px solid #e2e8f0; z-index: 1;
+    }
+    
+    .geo-btn {
+      margin-top: 8px; font-size: 0.85rem; color: var(--link-blue); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-weight: 500;
+    }
+    .geo-btn:hover { text-decoration: underline; }
 
-    /* Form Fields */
+    /* File Upload Area */
+    .dropzone {
+      border: 2px dashed #cbd5e1; border-radius: 10px; padding: 30px; text-align: center; cursor: pointer; background: #fffbeb; transition: 0.2s; margin-bottom: 25px;
+    }
+    .dropzone:hover { border-color: var(--primary-green); background: #f0fdf4; }
+    .icon-upload { font-size: 2rem; color: #94a3b8; margin-bottom: 10px; }
+    .preview-area img { max-width: 100%; max-height: 180px; border-radius: 8px; margin-top: 15px; border: 1px solid #ddd; }
+
+    /* Form Elements */
     .form-group { margin-bottom: 20px; }
-    .label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--text-dark); }
+    .form-label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--text-dark); font-size: 0.95rem; }
     
-    .input-field {
-      width: 100%;
-      padding: 12px 15px;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      font-family: inherit;
-      outline: none;
+    .form-control {
+      width: 100%; padding: 12px 15px; border: 1px solid #cbd5e1; border-radius: 8px; font-family: inherit; font-size: 0.95rem; outline: none; transition: border 0.2s;
     }
-    .input-field:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
+    .form-control:focus { border-color: var(--primary-green); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
 
-    /* Submit Button */
-    .btn-submit {
-      width: 100%;
-      padding: 15px;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.3s;
+    .btn-primary {
+      width: 100%; padding: 15px; background: var(--primary-green); color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.3s;
     }
-    .btn-submit:hover { background: #059669; transform: translateY(-2px); }
+    .btn-primary:hover { background: #059669; transform: translateY(-2px); }
 
-    /* Success Message (Hidden by default) */
-    .success-popup {
-      display: none;
-      text-align: center;
-      margin-top: 20px;
-      padding: 20px;
-      background: #ecfdf5;
-      border-radius: 10px;
-      color: #065f46;
+    /* Success Modal */
+    .success-box {
+      display: none; text-align: center; margin-top: 20px; padding: 25px; background: #ecfdf5; border-radius: 10px; color: #065f46; border: 1px solid #a7f3d0;
     }
 
-    /* Mobile Responsive */
+    /* Customizing Leaflet Controls */
+    .leaflet-control-geocoder { box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important; border: none !important; border-radius: 8px !important; }
+    .leaflet-control-geocoder-form input { font-family: 'Poppins', sans-serif; }
+
     @media (max-width: 768px) {
       .navbar { padding: 0 20px; }
-      .nav-links { display: none; } /* Mobile menu implementation pending */
-      .main-container { padding-top: 80px; }
+      .nav-items { display: none; } 
+      .wrapper { padding-top: 80px; }
       .report-card { padding: 25px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- NAVBAR -->
+  <!-- Header / Navigation -->
   <nav class="navbar">
     <a href="index.html" class="nav-logo">
-      <div class="nav-logo-text">
-        <span class="logo-top">TRASH</span>
-        <span class="logo-bottom">TALKERS</span>
+      <div class="brand-container">
+        <span class="brand-top">TRASH</span>
+        <span class="brand-bottom">TALKERS</span>
       </div>
     </a>
-
-    <div class="nav-links">
-      <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
-      <a href="report.html" class="nav-link report active"><i class="fa-solid fa-camera"></i> Report</a>
-      <a href="volunteer.html" class="nav-link team"><i class="fa-solid fa-users"></i> Team</a>
-      <a href="leaderboard.html" class="nav-link leaderboard"><i class="fa-solid fa-trophy"></i> Leaderboard</a>
-      <a href="donate.html" class="nav-link donate"><i class="fa-solid fa-heart"></i> Donate</a>
+    
+    <div class="nav-items">
+      <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="report.html" class="nav-item report active"><i class="fa-solid fa-camera"></i> Report</a>
+      <a href="volunteer.html" class="nav-item team"><i class="fa-solid fa-users"></i> Team</a>
+      <a href="leaderboard.html" class="nav-item leaderboard"><i class="fa-solid fa-trophy"></i> Leaderboard</a>
+      <a href="donate.html" class="nav-item donate"><i class="fa-solid fa-heart"></i> Donate</a>
     </div>
 
     <div class="nav-right">
-      <a href="report.html" class="nav-cta">Report Issue</a>
+      <a href="report.html" class="cta-btn">Report Issue</a>
     </div>
   </nav>
 
-  <!-- MAIN SECTION -->
-  <div class="main-container">
+  <!-- Main Content Area -->
+  <div class="wrapper">
     <div class="report-card">
-      <h1 class="card-title">Report an Issue</h1>
-      <p class="card-desc">See garbage or a pothole? Pin it on the map so our team can fix it!</p>
+      <h1 class="page-header">Report an Issue</h1>
+      <p class="page-sub">Use the search box or click on the map to pin the location.</p>
 
-      <form id="issueForm">
+      <form id="submissionForm">
         
-        <!-- STEP 1: MAP -->
-        <div class="form-group map-container">
-          <label class="label">1. Pin Location <span style="color:red">*</span></label>
-          <div id="map-box"></div>
-          <p class="hint-text">ℹ️ Click anywhere on the map to drop a pin.</p>
+        <!-- Map Section -->
+        <div class="form-group map-wrapper">
+          <label class="form-label">1. Pin Location <span style="color:#ef4444">*</span></label>
+          <div id="issue-map"></div>
           
-          <!-- Hidden fields to store lat/lng for backend -->
-          <input type="hidden" id="lat" name="latitude">
-          <input type="hidden" id="lng" name="longitude">
+          <div class="geo-btn" onclick="getCurrentLocation()">
+            <i class="fa-solid fa-location-crosshairs"></i> Use My Current Location
+          </div>
+          
+          <!-- Hidden inputs for backend -->
+          <input type="hidden" id="lat-field" name="latitude">
+          <input type="hidden" id="lng-field" name="longitude">
         </div>
 
-        <!-- STEP 2: PHOTO -->
+        <!-- Image Upload -->
         <div class="form-group">
-          <label class="label">2. Upload Photo</label>
-          <div class="upload-box" id="dropZone">
-            <div class="upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
-            <p>Click to upload proof (Image)</p>
-            <input type="file" id="filePicker" accept="image/*" style="display:none">
-            <div class="preview-img" id="imgPreview"></div>
+          <label class="form-label">2. Photo Evidence</label>
+          <div class="dropzone" id="uploadArea">
+            <div class="icon-upload"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+            <p>Click to upload image (JPG/PNG)</p>
+            <input type="file" id="fileInput" accept="image/*" style="display:none">
+            <div class="preview-area" id="imagePreview"></div>
           </div>
         </div>
 
-        <!-- STEP 3: DETAILS -->
+        <!-- Category Select -->
         <div class="form-group">
-          <label class="label">3. Select Category</label>
-          <select class="input-field" required>
-            <option value="" disabled selected>What is the issue?</option>
+          <label class="form-label">3. Select Category</label>
+          <select class="form-control" required>
+            <option value="" disabled selected>Select issue type...</option>
             <option value="garbage">Garbage / Litter</option>
-            <option value="pothole">Road Damage / Pothole</option>
-            <option value="graffiti">Vandalism / Graffiti</option>
+            <option value="pothole">Pothole / Road Damage</option>
+            <option value="graffiti">Graffiti / Vandalism</option>
             <option value="other">Other</option>
           </select>
         </div>
 
+        <!-- Description -->
         <div class="form-group">
-          <label class="label">4. Description (Optional)</label>
-          <textarea class="input-field" rows="3" placeholder="Any extra details..."></textarea>
+          <label class="form-label">4. Details (Optional)</label>
+          <textarea class="form-control" rows="3" placeholder="Add any extra details..."></textarea>
         </div>
 
-        <button type="submit" class="btn-submit">Submit Report</button>
+        <button type="submit" class="btn-primary">Submit Report</button>
       </form>
 
-      <!-- Success Message -->
-      <div class="success-popup" id="msgBox">
-        <h3><i class="fa-solid fa-check-circle"></i> Reported!</h3>
-        <p>Thanks for helping keep Indore clean. We've notified volunteers nearby.</p>
+      <!-- Success Feedback -->
+      <div class="success-box" id="successMsg">
+        <h3><i class="fa-solid fa-check-circle"></i> Submitted Successfully!</h3>
+        <p>Your report has been logged. Nearby volunteers have been notified.</p>
       </div>
 
     </div>
   </div>
 
-  <!-- Leaflet Map Library -->
+  <!-- Scripts -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
   <script>
-    // --- MAP SETUP ---
-    // Centered on Indore (My City)
-    const indoreCoords = [22.7196, 75.8577];
-    const map = L.map('map-box').setView(indoreCoords, 14);
+    // --- Map Initialization ---
+    // Using generic center initially, will update with geolocation
+    const defaultCenter = [22.7196, 75.8577]; // Indore
+    const map = L.map('issue-map').setView(defaultCenter, 13);
 
-    // Load visual tiles from OpenStreetMap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // --- ADDING FAKE VOLUNTEERS (Just for demo) ---
-    const nearbyVolunteers = [
-      [22.722, 75.860], // Near Rajwada
-      [22.715, 75.855], // Near Station
-      [22.725, 75.850]
-    ];
+    let currentPin = null;
+    let locationCircle = null;
 
-    // Green icon for volunteers
-    const greenIcon = new L.Icon({
-      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41]
-    });
+    // --- Search Control ---
+    const searchControl = L.Control.geocoder({
+      defaultMarkGeocode: false,
+      placeholder: "Search area...",
+      errorMessage: "Not found."
+    })
+    .on('markgeocode', function(e) {
+      const coords = e.geocode.center;
+      updateMapState(coords.lat, coords.lng, 16);
+    })
+    .addTo(map);
 
-    // Loop to add markers
-    nearbyVolunteers.forEach(pos => {
-      L.marker(pos, {icon: greenIcon}).addTo(map)
-       .bindPopup("Volunteer nearby!");
-    });
-
-    // --- USER PIN LOGIC ---
-    let myPin = null;
-
-    map.on('click', function(e) {
-      const lat = e.latlng.lat;
-      const lng = e.latlng.lng;
-
-      // Remove old pin if exists
-      if (myPin) {
-        map.removeLayer(myPin);
+    // --- Geolocation Function ---
+    function getCurrentLocation() {
+      if (!navigator.geolocation) {
+        alert("Geolocation is not supported by this browser.");
+        return;
       }
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const { latitude, longitude, accuracy } = pos.coords;
+          
+          // Remove old accuracy circle
+          if (locationCircle) map.removeLayer(locationCircle);
 
-      // Add new red pin
-      myPin = L.marker([lat, lng]).addTo(map)
-        .bindPopup("Selected Location")
+          // Add blue circle for accuracy
+          locationCircle = L.circle([latitude, longitude], {
+            color: '#3b82f6',
+            fillColor: '#3b82f6',
+            fillOpacity: 0.15,
+            radius: accuracy
+          }).addTo(map);
+
+          updateMapState(latitude, longitude, 16);
+        },
+        (err) => {
+          console.warn("Geolocation error:", err);
+          alert("Could not access location. Please enable permissions.");
+        }
+      );
+    }
+    
+    // Attempt auto-locate on page load
+    getCurrentLocation();
+
+    // --- Core Logic: Update Pin & Inputs ---
+    function updateMapState(lat, lng, zoomLevel) {
+      // Move map
+      if(zoomLevel) map.setView([lat, lng], zoomLevel);
+
+      // Manage Marker
+      if (currentPin) map.removeLayer(currentPin);
+      
+      currentPin = L.marker([lat, lng]).addTo(map)
+        .bindPopup("<b>Selected Location</b>")
         .openPopup();
 
-      // Update hidden inputs
-      document.getElementById('lat').value = lat;
-      document.getElementById('lng').value = lng;
-      
-      console.log("Pinned at:", lat, lng); // For debugging
+      // Update Form Data
+      document.getElementById('lat-field').value = lat;
+      document.getElementById('lng-field').value = lng;
+    }
+
+    // Click on map to pin
+    map.on('click', (e) => {
+      updateMapState(e.latlng.lat, e.latlng.lng);
     });
 
-    // --- PHOTO UPLOAD LOGIC ---
-    const dropZone = document.getElementById('dropZone');
-    const filePicker = document.getElementById('filePicker');
-    const imgPreview = document.getElementById('imgPreview');
+    // --- File Upload Handling ---
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const previewArea = document.getElementById('imagePreview');
 
-    // Click box to open file manager
-    dropZone.addEventListener('click', () => filePicker.click());
+    uploadArea.addEventListener('click', () => fileInput.click());
 
-    // Show preview when file selected
-    filePicker.addEventListener('change', (e) => {
-      if(e.target.files && e.target.files[0]) {
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
         const reader = new FileReader();
-        reader.onload = function(event) {
-          imgPreview.innerHTML = `<img src="${event.target.result}" alt="Preview">`;
-        }
-        reader.readAsDataURL(e.target.files[0]);
+        reader.onload = (e) => {
+          previewArea.innerHTML = `<img src="${e.target.result}" alt="Proof">`;
+        };
+        reader.readAsDataURL(file);
       }
     });
 
-    // --- FORM SUBMIT ---
-    const form = document.getElementById('issueForm');
-    const msgBox = document.getElementById('msgBox');
+    // --- Form Submission ---
+    const form = document.getElementById('submissionForm');
+    const successMsg = document.getElementById('successMsg');
 
     form.addEventListener('submit', (e) => {
-      e.preventDefault(); // Stop page reload
-
-      // Simple validation for map
-      if(!document.getElementById('lat').value) {
-        alert("Please select a location on the map first!");
+      e.preventDefault();
+      
+      const lat = document.getElementById('lat-field').value;
+      if (!lat) {
+        alert("Please drop a pin on the map first!");
         return;
       }
 
-      // Hide form and show success message
+      // Simulate API call / processing
       form.style.display = 'none';
-      msgBox.style.display = 'block';
-      
-      // Scroll to message
-      msgBox.scrollIntoView({behavior: "smooth"});
+      successMsg.style.display = 'block';
+      successMsg.scrollIntoView({ behavior: 'smooth' });
     });
 
   </script>

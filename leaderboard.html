@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- 
+    Project: Trash Talkers
+    Page: Leaderboard
+  -->
+  <title>Leaderboard | Trash Talkers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Font: Inter  -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* CSS Variables */
+    :root {
+      --primary: #10b981;
+      --bg: #f5f7f9;
+      --text: #141619;
+      --text-light: #5e646b;
+      --border: #e2e4e7;
+      --card-bg: #ffffff;
+      
+      /* Rank Colors */
+      --gold: #fcc419;
+      --silver: #adb5bd;
+      --bronze: #e67700;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    
+    a { text-decoration: none; color: inherit; }
+
+    /* Navbar */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 72px;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      z-index: 1000;
+    }
+
+    .nav-logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+    .logo-top { font-size: 0.55rem; letter-spacing: 0.5em; text-transform: uppercase; color: #c9a97a; }
+    .logo-bottom { font-size: 1.4rem; font-weight: 800; color: #4b2e15; }
+
+    .nav-links { display: flex; gap: 6px; }
+    
+    .nav-link {
+      padding: 8px 16px; 
+      border-radius: 50px; 
+      font-size: 0.9rem; 
+      font-weight: 500; 
+      color: var(--text-light); 
+      transition: 0.2s;
+    }
+    
+    .nav-link:hover { color: var(--text); background: rgba(0,0,0,0.05); }
+    .nav-link.active { color: #8b5cf6; background: rgba(139, 92, 246, 0.1); } /* Purple for Leaderboard */
+    .nav-link i { margin-right: 6px; }
+
+    .nav-cta {
+      padding: 10px 24px; 
+      background: #10b981; 
+      color: white; 
+      border-radius: 50px; 
+      font-weight: 600; 
+      font-size: 0.9rem;
+    }
+    
+    /* Main Layout */
+    main {
+      padding-top: 110px; padding-bottom: 100px;
+      max-width: 1100px; margin: 0 auto;
+      padding-left: 20px; padding-right: 20px;
+      text-align: center;
+    }
+
+    .page-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 8px; color: var(--text); }
+    .page-desc { color: var(--text-light); margin-bottom: 30px; font-size: 1rem; }
+
+    /* Tab Switcher */
+    .tabs-wrapper {
+      display: inline-flex;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 4px;
+      margin-bottom: 40px;
+    }
+
+    .tab-btn {
+      padding: 8px 24px;
+      border-radius: 6px; border: none; background: transparent;
+      font-weight: 600; color: var(--text-light); cursor: pointer;
+      font-family: inherit; font-size: 0.9rem; transition: all 0.2s;
+    }
+
+    .tab-btn:hover { color: var(--text); background: #f1f3f5; }
+    .tab-btn.active { background: #e6fcf5; color: #0ca678; }
+
+    .leaderboard-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 24px; text-align: left;
+    }
+
+    /* Leaderboard Card */
+    .lb-card { background: #fff; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+
+    .lb-header {
+      padding: 20px 24px; border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .lb-header h3 { font-size: 1.1rem; font-weight: 700; }
+    .lb-arrows { color: var(--border); font-size: 0.9rem; }
+
+    /* List Rows */
+    .lb-list { padding: 8px 0; }
+    
+    .lb-item {
+      display: flex; align-items: center; padding: 12px 24px; transition: background 0.2s;
+    }
+    .lb-item:hover { background: #f8f9fa; }
+
+    /* Rank Badge */
+    .rank {
+      width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+      font-weight: 600; color: var(--text-light); margin-right: 16px; font-size: 0.95rem;
+    }
+
+    .rank.gold { background-color: var(--gold); border-radius: 50%; color: #fff; }
+    .rank.silver { background-color: var(--silver); border-radius: 50%; color: #fff; }
+    .rank.bronze { background-color: var(--bronze); border-radius: 50%; color: #fff; }
+
+    .user-info { flex: 1; display: flex; align-items: center; gap: 12px; }
+
+    /* User Avatar */
+    .avatar-placeholder {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; font-weight: 600; color: white;
+    }
+
+    .name { font-weight: 600; font-size: 0.95rem; color: var(--text); }
+    .score { font-weight: 600; font-size: 0.95rem; color: var(--text-light); }
+    
+    .money-score { color: #10b981; }
+
+    /* Floating Rank Bar (Bottom) */
+    .my-rank-bar {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      background: #fff; border: 1px solid var(--border); padding: 12px 24px;
+      border-radius: 12px; display: flex; align-items: center; gap: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 90%; max-width: 600px; z-index: 999;
+    }
+    .my-rank-info { flex: 1; display: flex; align-items: center; gap: 12px; }
+    .my-rank-name { font-weight: 700; font-size: 0.95rem; }
+    .my-rank-val { color: var(--text-light); font-size: 0.9rem; }
+    .my-score { font-weight: 700; color: #10b981; }
+
+    /* Helper Colors */
+    .bg-blue { background: #3b82f6; }
+    .bg-green { background: #10b981; }
+    .bg-purple { background: #8b5cf6; }
+    .bg-orange { background: #f97316; }
+    .bg-pink { background: #ec4899; }
+    .bg-teal { background: #14b8a6; }
+    .bg-indigo { background: #6366f1; }
+
+    /* Tab  */
+    .tab-content { display: none; }
+    .tab-content.active { display: grid; }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .navbar { padding: 0 20px; }
+      .nav-links { display: none; } 
+      .leaderboard-grid { grid-template-columns: 1fr; }
+      .my-rank-bar { bottom: 10px; width: 95%; padding: 10px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-logo-text">
+      <span class="logo-top">TRASH</span>
+      <span class="logo-bottom">TALKERS</span>
+    </div>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="report.html" class="nav-link"><i class="fa-solid fa-camera"></i> Report</a>
+      <a href="volunteer.html" class="nav-link"><i class="fa-solid fa-users"></i> Team</a>
+      <a href="leaderboard.html" class="nav-link active"><i class="fa-solid fa-trophy"></i> Leaderboard</a>
+      <a href="donate.html" class="nav-link"><i class="fa-solid fa-heart"></i> Donate</a>
+    </div>
+    <a href="report.html" class="nav-cta">Report Issue</a>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <h1 class="page-title">Leaderboards</h1>
+    <p class="page-desc">See where you stand and climb the ranks by keeping our city clean.</p>
+
+    <!-- Time Period Tabs -->
+    <div class="tabs-wrapper">
+      <button class="tab-btn active" onclick="openTab('week')">This week</button>
+      <button class="tab-btn" onclick="openTab('month')">This month</button>
+      <button class="tab-btn" onclick="openTab('alltime')">All time</button>
+    </div>
+
+    <!-- Tab 1: WEEK -->
+    <div id="week" class="leaderboard-grid tab-content active">
+      
+      <!-- Top Volunteers (Static Data) -->
+      <div class="lb-card">
+        <div class="lb-header">
+          <h3>Top Volunteers</h3>
+          <div class="lb-arrows"><i class="fa-solid fa-chevron-left"></i> <i class="fa-solid fa-chevron-right"></i></div>
+        </div>
+        <div class="lb-list">
+          <div class="lb-item">
+            <div class="rank gold">1</div>
+            <div class="user-info"><div class="avatar-placeholder bg-blue">JS</div><div class="name">James Smith</div></div>
+            <div class="score">24 kg</div>
+          </div>
+          <div class="lb-item">
+            <div class="rank silver">2</div>
+            <div class="user-info"><div class="avatar-placeholder bg-green">RP</div><div class="name">Riya Patel</div></div>
+            <div class="score">21 kg</div>
+          </div>
+          <div class="lb-item">
+            <div class="rank bronze">3</div>
+            <div class="user-info"><div class="avatar-placeholder bg-purple">MZ</div><div class="name">Michael Z.</div></div>
+            <div class="score">18 kg</div>
+          </div>
+          <div class="lb-item">
+            <div class="rank">4</div>
+            <div class="user-info"><div class="avatar-placeholder bg-orange">AK</div><div class="name">Arjun Kumar</div></div>
+            <div class="score">15 kg</div>
+          </div>
+          <div class="lb-item">
+            <div class="rank">5</div>
+            <div class="user-info"><div class="avatar-placeholder bg-pink">EL</div><div class="name">Emma Lee</div></div>
+            <div class="score">12 kg</div>
+          </div>
+          <div class="lb-item">
+            <div class="rank">6</div>
+            <div class="user-info"><div class="avatar-placeholder bg-teal">VS</div><div class="name">Vikram Singh</div></div>
+            <div class="score">10 kg</div>
+          </div>
+          <div class="lb-item">
+            <div class="rank">7</div>
+            <div class="user-info"><div class="avatar-placeholder bg-indigo">DL</div><div class="name">David Lopez</div></div>
+            <div class="score">8 kg</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Donors (Dynamic JS) -->
+      <div class="lb-card">
+        <div class="lb-header">
+          <h3>Top Donors</h3>
+          <div class="lb-arrows"><i class="fa-solid fa-chevron-left"></i> <i class="fa-solid fa-chevron-right"></i></div>
+        </div>
+        <div class="lb-list" id="donorList">
+          <!-- JS will load data here -->
+          <div style="padding:20px; text-align:center; color:#888;">Loading donations...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: MONTH (Placeholder) -->
+    <div id="month" class="leaderboard-grid tab-content">
+       <div class="lb-card"><div class="lb-header"><h3>Top Volunteers (Month)</h3></div><div class="lb-list"><div style="padding:20px;text-align:center;color:#999">Data updating...</div></div></div>
+       <div class="lb-card"><div class="lb-header"><h3>Top Donors (Month)</h3></div><div class="lb-list"><div style="padding:20px;text-align:center;color:#999">Data updating...</div></div></div>
+    </div>
+    
+    <!-- Tab 3: ALL TIME (Placeholder) -->
+    <div id="alltime" class="leaderboard-grid tab-content">
+       <div class="lb-card"><div class="lb-header"><h3>Top Volunteers (All Time)</h3></div><div class="lb-list"><div style="padding:20px;text-align:center;color:#999">Data updating...</div></div></div>
+       <div class="lb-card"><div class="lb-header"><h3>Top Donors (All Time)</h3></div><div class="lb-list"><div style="padding:20px;text-align:center;color:#999">Data updating...</div></div></div>
+    </div>
+
+  </main>
+
+  <!-- USER RANK BAR (Sticky Footer) -->
+  <div class="my-rank-bar">
+    <div class="rank">142</div>
+    <div class="my-rank-info">
+      <div class="avatar-placeholder bg-blue" style="width:32px;height:32px;font-size:0.8rem">ME</div>
+      <div>
+        <div class="my-rank-name">You (Guest)</div>
+        <div class="my-rank-val">Keep contributing to climb up!</div>
+      </div>
+    </div>
+    <div class="my-score">0 kg</div>
+  </div>
+
+  <script>
+    // 1. DATA: Raw Donor Amounts (Base: INR)
+    // Using simple objects for easy editing
+    const rawDonors = [
+      { name: "Siddharth K.", initial: "SK", color: "bg-orange", amount: 5000 },
+      { name: "Sarah Connor", initial: "SC", color: "bg-purple", amount: 3500 },
+      { name: "Rohan Mehta", initial: "RM", color: "bg-blue", amount: 2000 },
+      { name: "Jessica Liu", initial: "JL", color: "bg-pink", amount: 1500 },
+      { name: "Aditya B.", initial: "AB", color: "bg-green", amount: 1000 },
+      { name: "Mark P.", initial: "MP", color: "bg-teal", amount: 800 },
+      { name: "Neha Patel", initial: "NP", color: "bg-indigo", amount: 500 },
+    ];
+
+    // 2. CONFIG: Currency Rates
+    const currencyRates = {
+      'IN': { symbol: '₹', rate: 1 },
+      'US': { symbol: '$', rate: 0.012 },
+      'GB': { symbol: '£', rate: 0.0095 },
+      'EU': { symbol: '€', rate: 0.011 }
+    };
+
+    // 3. RENDER LOGIC
+    function renderDonors(currencyCode) {
+      // Use US if code not found
+      const config = currencyRates[currencyCode] || currencyRates['US']; 
+      
+      const container = document.getElementById('donorList');
+      container.innerHTML = ''; // Clear loading text
+
+      rawDonors.forEach((d, index) => {
+        // Convert Amount
+        let converted = Math.round(d.amount * config.rate);
+        
+        // Add Medals logic
+        let rankClass = '';
+        if (index === 0) rankClass = 'gold';
+        else if (index === 1) rankClass = 'silver';
+        else if (index === 2) rankClass = 'bronze';
+
+        // Create HTML string
+        const html = `
+          <div class="lb-item">
+            <div class="rank ${rankClass}">${index + 1}</div>
+            <div class="user-info">
+              <div class="avatar-placeholder ${d.color}">${d.initial}</div>
+              <div class="name">${d.name}</div>
+            </div>
+            <div class="score money-score">${config.symbol}${converted.toLocaleString()}</div>
+          </div>
+        `;
+        container.innerHTML += html;
+      });
+    }
+
+    // 4. AUTO-DETECT LOCATION (API)
+    fetch('https://ipapi.co/json/')
+      .then(res => res.json())
+      .then(data => {
+        let country = data.country_code;
+        
+        // Map common EU countries to 'EU' currency
+        const euCountries = ['DE','FR','IT','ES','NL','BE'];
+        if (euCountries.includes(country)) country = 'EU';
+        
+        // Render based on detected country or default to US
+        if (currencyRates[country]) {
+          renderDonors(country);
+        } else {
+          renderDonors('US');
+        }
+      })
+      .catch(err => {
+        // Fallback if API fails
+        console.log('Location check failed, using INR default');
+        renderDonors('IN'); 
+      });
+
+    // 5. TAB SWITCHER FUNCTION
+    function openTab(tabName) {
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      
+      // Show selected tab
+      document.getElementById(tabName).classList.add('active');
+      event.target.classList.add('active');
+    }
+  </script>
+
+</body>
+</html>

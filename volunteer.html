@@ -14,7 +14,8 @@
       --primary: #10b981;
       --secondary: #f43f5e;
       --accent: #fbbf24;
-      --blue: #3b82f6; /* Bright blue from your image */
+      --blue: #3b82f6;
+      --purple: #8b5cf6;
       
       --bg: #f8fafc;
       --card: #ffffff;
@@ -88,7 +89,7 @@
     }
 
     .nav-link {
-      padding: 10px 20px;
+      padding: 10px 18px;
       border-radius: 50px;
       font-size: 0.9rem;
       font-weight: 500;
@@ -97,13 +98,29 @@
     }
 
     .nav-link:hover { color: var(--text); background: rgba(0,0,0,0.05); }
+    .nav-link.active { color: var(--primary); background: rgba(16, 185, 129, 0.1); }
     .nav-link i { margin-right: 8px; }
 
     /* Active link style */
+    .nav-link.report:hover, .nav-link.report.active {
+      color: var(--secondary);
+      background: rgba(244, 63, 94, 0.1);
+    }
+    
     .nav-link.team,
     .nav-link.team.active {
       color: var(--blue);
       background: rgba(59, 130, 246, 0.1);
+    }
+
+    .nav-link.leaderboard:hover, .nav-link.leaderboard.active {
+      color: var(--purple);
+      background: rgba(139, 92, 246, 0.1);
+    }
+
+    .nav-link.donate:hover, .nav-link.donate.active {
+      color: var(--accent);
+      background: rgba(251, 191, 36, 0.12);
     }
 
     .nav-right {
@@ -149,12 +166,11 @@
       padding-bottom: 60px;
     }
 
-    /* Hero Section - Matched to Image */
+    /* Hero Section */
     .team-hero {
       text-align: center;
       padding: 60px 20px;
       border-radius: 16px;
-      /* The exact light blue background from the image */
       background-color: #e0f2fe; 
       margin-bottom: 30px;
     }
@@ -162,13 +178,11 @@
     .team-hero h1 {
       font-size: 2.2rem;
       font-weight: 700;
-      /* Bright blue title color */
       color: #3b82f6; 
       margin-bottom: 12px;
     }
 
     .team-hero p {
-      /* Muted blue-grey subtitle */
       color: #475569; 
       max-width: 700px;
       margin: 0 auto;
@@ -242,6 +256,10 @@
       <a href="volunteer.html" class="nav-link team active">
         <i class="fa-solid fa-users"></i>Team
       </a>
+      <!-- NEW LEADERBOARD LINK -->
+      <a href="leaderboard.html" class="nav-link leaderboard">
+        <i class="fa-solid fa-trophy"></i>Leaderboard
+      </a>
       <a href="donate.html" class="nav-link donate">
         <i class="fa-solid fa-heart"></i>Donate
       </a>
@@ -284,3 +302,4 @@
 
 </body>
 </html>
+

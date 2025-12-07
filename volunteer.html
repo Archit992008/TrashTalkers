@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Trash Talkers | Team</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Icons + Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Basic theme colors */
+    :root {
+      --primary: #10b981;
+      --blue: #3b82f6;
+      --bg: #f5f7fa;
+      --card: #fff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 40px;
+      height: 70px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      z-index: 10;
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      font-weight: 700;
+    }
+
+    .logo-text span:first-child {
+      font-size: 0.55rem;
+      letter-spacing: 0.4em;
+      color: #bfa27a;
+    }
+
+    .logo-text span:last-child {
+      font-size: 1.3rem;
+      color: #4b2e15;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .nav-link {
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      color: var(--muted);
+      transition: 0.2s ease;
+    }
+
+    .nav-link:hover {
+      background: rgba(0,0,0,0.05);
+      color: var(--text);
+    }
+
+    .nav-link.active {
+      background: rgba(59,130,246,0.12);
+      color: var(--blue);
+    }
+
+    .menu-btn {
+      display: none;
+      font-size: 1.4rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Main Wrapper */
+    main {
+      padding: 100px 20px 50px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .team-hero {
+      text-align: center;
+      background: #dce9ff;
+      padding: 35px;
+      border-radius: 16px;
+      margin-bottom: 30px;
+    }
+
+    .team-hero h1 {
+      font-size: 2.3rem;
+      margin-bottom: 8px;
+      color: var(--blue);
+    }
+
+    .team-hero p {
+      max-width: 600px;
+      margin: auto;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .form-container {
+      background: var(--card);
+      padding: 18px;
+      border-radius: 14px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+    }
+
+    iframe {
+      width: 100%;
+      height: 900px;
+      border: none;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 70px;
+        background: rgba(255,255,255,0.97);
+        padding: 15px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .menu-btn {
+        display: block;
+      }
+
+      iframe {
+        height: 1050px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="index.html" class="logo">
+      <div class="logo-text">
+        <span>TRASH</span>
+        <span>TALKERS</span>
+      </div>
+    </a>
+
+    <div class="nav-links" id="navLinks">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="report.html" class="nav-link">Report</a>
+      <a href="volunteer.html" class="nav-link active">Team</a>
+      <a href="donate.html" class="nav-link">Donate</a>
+    </div>
+
+    <button class="menu-btn" onclick="toggleMenu()">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </nav>
+
+  <main>
+    <section class="team-hero">
+      <h1>Become a Volunteer</h1>
+      <p>Join our clean-up efforts and choose shifts or roles that fit your schedule.</p>
+    </section>
+
+    <section class="form-container">
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSc5sveesxPF3-lIgyM1toF-YCZ3PXwRdgpeZ1r-8VstukBTvA/viewform?embedded=true">Loading…</iframe>
+    </section>
+  </main>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('navLinks').classList.toggle('open');
+    }
+  </script>
+
+</body>
+</html>
